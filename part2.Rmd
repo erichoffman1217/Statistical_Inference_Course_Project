@@ -1,0 +1,48 @@
+---
+title: "Part2"
+author: "Eric Hoffman"
+date: "April 1, 2018"
+output:
+  word_document: default
+  pdf_document: default
+---
+## Overview
+
+The goal of this analysis is to determine if the dosage of Vitamin C and Ascorbic Acid have an effect on tooth growth in Guinea Pigs. This first section of code is to better understand the dataset and determine how best to move forward with testing this hypothesis.
+
+```{r}
+library(ggplot2)
+data(ToothGrowth)
+str(ToothGrowth)
+summary(ToothGrowth)
+table(ToothGrowth$supp,ToothGrowth$dose)
+levels(ToothGrowth$supp) <- c("Orange Juice", "Ascorbic Acid")
+ggplot(ToothGrowth, aes(x=factor(dose), y=len)) + 
+        facet_grid(.~supp) +
+        geom_boxplot(aes(fill = supp), show_guide = FALSE) +
+        labs(title="Guinea pig tooth length by dosage for each type of supplement", 
+             x="Dose (miligrams / day)",
+             y="Tooth Length")
+```
+
+## Data Description
+
+The above plot seems to indicate visually that an increase in the doseage of vitamin C may have an effect on tooth growth. Orange juice and ascorbic acid do have noticably different outcomes at the 0.5 and 1.0 mg/day levels.
+
+```{r cars}
+hypothall<-t.test(len ~ supp, data = ToothGrowth)
+hypoth1<-t.test(len ~ supp, data = subset(ToothGrowth, dose == 0.5))
+hypoth2<-t.test(len ~ supp, data = subset(ToothGrowth, dose == 1))
+hypoth3<-t.test(len ~ supp, data = subset(ToothGrowth, dose == 2))
+x <- c('all', '0.5', '1.0', '2.0')
+y <- c(hypothall$p.value,hypoth1$p.value,hypoth2$p.value,hypoth3$p.value)
+pvalue_table<- as.data.frame(cbind(x,y))
+colnames(pvalue_table) <- c('Dose', 'p-value')
+pvalue_table
+```
+
+The above tests look to see if there is a statistically significant difference in tooth growth when orange juice or ascorbic acid is given as a dose to a gerbil. The four tests differ across dosage level. The first is all doses, then 0.5 mg/day, 1.0 mg/day, and finally, 2.0 mg/day. The 1.0 dose and the 0.5 dose are stastically significant (p-value < 0.05 level).
+
+## Conclusions
+
+OJ statistically has a greater effect on tooth growth at the 0.5 and 1.0 dosage levels. There is not statistical difference at the 2.0 mg/day dosage. This is assuming that the tooth growth distributions are normal and there is not a hidden factor that is both influencing tooth growth besides vitamin c. 
