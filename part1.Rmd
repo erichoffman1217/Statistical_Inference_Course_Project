@@ -2,7 +2,9 @@
 title: "Statistical Inference Course Project Part 1"
 author: "Eric Hoffman"
 date: "April 1, 2018"
-output: pdf_document
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -65,4 +67,4 @@ The sample variances look less normal than the means do but this is mostly likel
 
 ## Conclusion
 
-Both graphs show that a sample mean or variance will be normally distributed and adhear to the Central Limit Theorem. 
+Both graphs show that a sample mean or variance will be normally distributed and adhear to the Central Limit Theorem. Increasing the sample or increase the number of samples to create the mean will draw the sample mean and sample mean variance closer to the theoretical mean for the exponential function. 
